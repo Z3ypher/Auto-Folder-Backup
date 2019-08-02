@@ -1,0 +1,170 @@
+Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+[System.Windows.Forms.Application]::EnableVisualStyles()
+
+[void][Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic')
+
+$arr = Get-ChildItem -Path C:\Users  | 
+       Where-Object {$_.PSIsContainer} | 
+       Foreach-Object {$_.Name}
+
+$Question = 'Enter the Exact Path You Want The Files To Go '
+$Qmsg = 'Where You Want The Files To Backup'
+
+$words = [Microsoft.VisualBasic.Interaction]::InputBox($Question, $Qmsg)
+
+
+$LQuestion = 'Address Location'
+$Lque = ' Address Location'
+
+$loc = [Microsoft.VisualBasic.Interaction]::InputBox($LQuestion, $Lque)
+
+
+$form                            = New-Object system.Windows.Forms.Form
+$form.ClientSize                 = '400,400'
+$form.text                       = "Form"
+$form.TopMost                    = $false
+
+$label                          = New-Object system.Windows.Forms.Label
+$label.text                     = "Please Make a Selection from the List Below:"
+$label.AutoSize                 = $true
+$label.width                    = 25
+$label.height                   = 10
+$label.location                 = New-Object System.Drawing.Point(52,15)
+$label.Font                     = 'Microsoft Sans Serif,10'
+
+$listBox                        = New-Object system.Windows.Forms.ListBox
+$listBox.text                   = "listBox"
+$listBox.width                  = 245
+$listBox.height                 = 328
+$listBox.location               = New-Object System.Drawing.Point(24,43)
+
+$OKButton                        = New-Object system.Windows.Forms.Button
+$OKButton.text                   = "OK"
+$OKButton.width                  = 94
+$OKButton.height                 = 30
+$OKButton.location               = New-Object System.Drawing.Point(288,71)
+$OKButton.Font                   = 'Microsoft Sans Serif,10'
+$OKButton.DialogResult = [System.Windows.Forms.DialogResult]::OK
+$form.AcceptButton = $OKButton
+$form.Controls.Add($OKButton)
+
+$CancelButton                    = New-Object system.Windows.Forms.Button
+$CancelButton.text               = "Cancel"
+$CancelButton.width              = 96
+$CancelButton.height             = 32
+$CancelButton.location           = New-Object System.Drawing.Point(287,176)
+$CancelButton.Font               = 'Microsoft Sans Serif,10'
+$CancelButton.DialogResult = [System.Windows.Forms.DialogResult]::Cancel
+$form.CancelButton = $CancelButton
+$form.Controls.Add($CancelButton)
+
+$Form.controls.AddRange(@($label,$listBox,$OKButton,$CancelButton))
+
+
+
+For ($a=0; ($a -le $arr.length -1); $a ++) {
+
+[void] $listBox.Items.Add($arr[$a])
+
+}
+
+$listBox.SelectionMode = 'MultiExtended'
+
+$listBox.Height = 350
+$form.Controls.Add($listBox)
+$form.Topmost = $true
+
+$result = $form.ShowDialog()
+
+if ($result -eq [System.Windows.Forms.DialogResult]::OK)
+{
+    $x = $listBox.SelectedItems
+    if ($x.Count -le 1){
+        $selection = $x
+}
+    elseif ( $x.Count -ge 1) {
+        $selection = $x.split(" ")
+}
+}
+
+For ($i=0; $i -le $selection.Count -1  ; $i++) {
+ $f = $selection[$i]
+#Contacts#
+
+  $doc = "C:\Users\$f\Contacts"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+#Desktop#
+  $doc = "C:\Users\$f\Desktop"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+
+#Documents#
+  $doc = "C:\Users\$f\Documents"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+  #Downloads
+  $doc = "C:\Users\$f\Downloads"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+   #Favorites#
+  $doc = "C:\Users\$f\Favorites"
+   $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+
+  #Links#
+  $doc = "C:\Users\$f\Links"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+
+  #Music#
+  $doc = "C:\Users\$f\Music"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+  #Pictures#
+  $doc = "C:\Users\$f\Pictures"
+   $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+  #Videos#
+  $doc = "C:\Users\$f\Videos"
+  $Fold = "$words\Backup - $loc"
+  $toFldDoc = "$Fold\$f"
+  New-Item  $Fold -type directoy -Force
+  New-Item  $toFldDoc -type directory -Force
+  Copy-Item $doc -Destination $toFldDoc -recurse -Force
+
+  }
